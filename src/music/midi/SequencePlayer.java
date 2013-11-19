@@ -192,48 +192,54 @@ public class SequencePlayer {
      * Play an octave up and back down starting from middle C.
      */
     public static void main(String[] args) {
-        SequencePlayer player;
+        try {
+            SequencePlayer player;
 
-        // create a new player, with 120 beats (i.e. quarter note) per
-        // minute, with 2 tick per quarter note
-        player = new SequencePlayer(120, 2);
+            // create a new player, with 120 beats (i.e. quarter note) per
+            // minute, with 2 tick per quarter note
+            player = new SequencePlayer(120, 2);
 
-        final Pitch C = new Pitch('C');
-        int start = 1;
-        for (Pitch p : new Pitch[] {
-                new Pitch('C'),
-                new Pitch('D'),
-                new Pitch('E'),
-                new Pitch('F'),
-                new Pitch('G'),
-                new Pitch('A'),
-                new Pitch('B'),
-                new Pitch('C').transpose(Pitch.OCTAVE),
-                new Pitch('B'),
-                new Pitch('A'),
-                new Pitch('G'),
-                new Pitch('F'),
-                new Pitch('E'),
-                new Pitch('D'),
-                new Pitch('A'),
-        }) {
-            player.addNote(Instrument.PIANO, p.difference(C) + 60, start++, 1);
-        }
+            final Pitch C = new Pitch('C');
+            int start = 1;
+            for (Pitch p : new Pitch[] {
+                    new Pitch('C'),
+                    new Pitch('D'),
+                    new Pitch('E'),
+                    new Pitch('F'),
+                    new Pitch('G'),
+                    new Pitch('A'),
+                    new Pitch('B'),
+                    new Pitch('C').transpose(Pitch.OCTAVE),
+                    new Pitch('B'),
+                    new Pitch('A'),
+                    new Pitch('G'),
+                    new Pitch('F'),
+                    new Pitch('E'),
+                    new Pitch('D'),
+                    new Pitch('A'),
+            }) {
+                player.addNote(Instrument.PIANO, p.difference(C) + 60, start++, 1);
+            }
 
-        System.out.println(player);
+            System.out.println(player);
 
-        // play!
-        player.play();
+            // play!
+            player.play();
 
-        /*
-         * Note: A possible weird behavior of the Java sequencer: Even if the
-         * sequencer has finished playing all of the scheduled notes and is
-         * manually closed, the program may not terminate. This is likely
-         * due to daemon threads that are spawned when the sequencer is
-         * opened but keep on running even after the sequencer is killed. In
-         * this case, you need to explicitly exit the program with
-         * System.exit(0).
-         */
-        // System.exit(0);
+            /*
+             * Note: A possible weird behavior of the Java sequencer: Even if the
+             * sequencer has finished playing all of the scheduled notes and is
+             * manually closed, the program may not terminate. This is likely
+             * due to daemon threads that are spawned when the sequencer is
+             * opened but keep on running even after the sequencer is killed. In
+             * this case, you need to explicitly exit the program with
+             * System.exit(0).
+             */
+            // System.exit(0);  
+        } catch (MidiUnavailableException e) {
+            System.exit(0);
+        } catch (InvalidMidiDataException e) {
+            System.exit(0);
+        }   
     }
 }
